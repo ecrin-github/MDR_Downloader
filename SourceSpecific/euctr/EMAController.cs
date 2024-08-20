@@ -47,6 +47,11 @@ public class EMA_Controller : IDLController
         // Get the (approximate) date of revision from the file date stamp.
                
         string date = Regex.Match(file_name, @"\d{8}").Value;
+        if (date.Length != 8)
+        {
+            _loggingHelper.LogError($"Incorrect date format extracted from file name: {date}");
+            return res;
+        }
         int y = int.Parse(date[..4]);
         int m = int.Parse(date[4..6]);
         int d = int.Parse(date[6..]);
