@@ -58,7 +58,7 @@ public class EMA_Controller : IDLController
         catch (Exception ex)
         {
             _loggingHelper.LogError(
-                $"Incorrect date format extracted from file name: {date}. Default date will be used. Detail: {ex.Message}");
+                $"Incorrect date format in one of the entries. Default date will be used. Detail: {ex.Message}");
             date_revised = DateTime.Now; // default date if parsing fails
         }
         
