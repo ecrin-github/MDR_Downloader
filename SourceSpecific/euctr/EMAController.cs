@@ -47,15 +47,20 @@ public class EMA_Controller : IDLController
         // Get the (approximate) date of revision from the file date stamp.
                
         string date = Regex.Match(file_name, @"\d{8}").Value;
-        if (date.Length != 8)
+        DateTime date_revised;
+        try
         {
-            _loggingHelper.LogError($"Incorrect date format extracted from file name: {date}");
-            return res;
+            int y = int.Parse(date[..4]);
+            int m = int.Parse(date[4..6]);
+            int d = int.Parse(date[6..]);
+            date_revised = new DateTime(y, m, d);
         }
-        int y = int.Parse(date[..4]);
-        int m = int.Parse(date[4..6]);
-        int d = int.Parse(date[6..]);
-        DateTime date_revised = new DateTime(y, m, d);
+        catch (Exception ex)
+        {
+            _loggingHelper.LogError(
+                $"Incorrect date format extracted from file name: {date}. Default date will be used. Detail: {ex.Message}");
+            date_revised = DateTime.Now; // default date if parsing fails
+        }
         
         // set up JSON options for later writing
         
